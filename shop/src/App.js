@@ -62,6 +62,7 @@ function App() {
           <div>아무거나 적었을 때</div>
         </Route>
       </Switch>
+      <button ><a href="http://www.naver.com">네이버</a></button>
       
 
 
