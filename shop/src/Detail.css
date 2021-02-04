@@ -1,0 +1,14 @@
+.my-alert{
+    /* background-color:#eeeeee; */
+    background-color:#ffe591;
+    padding:20px;
+    border-radius: 5px;
+    width:100%;
+    max-width: 500px;
+    margin:auto;
+}
+/* 이거 나중에 scss 로 다시 해야함... sass 인가 무튼  */
+/* 다양한 색상의 alert UI가 필요하다면? */
+.my-alert p{
+    margin-bottom:0px;
+}

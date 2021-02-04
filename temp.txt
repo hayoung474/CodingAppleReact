@@ -1,0 +1,176 @@
+<template>
+  <v-app>
+    <v-container>
+      <div class="a">
+      <h3>회원가입</h3>
+      <input type="text" v-model="id" placeholder="회원 아이디" />
+      <input type="text" v-model="pw" placeholder="회원 비밀번호" />
+      <input type="text" v-model="name" placeholder="회원 이름" />
+      <input
+        type="text"
+        v-model="email"
+        placeholder="회원 이메일 id@example.com"
+      />
+      <input
+        type="text"
+        v-model="phoneNumber"
+        placeholder="회원 전화번호 01012345678"
+      />
+      <input type="text" v-model="birth" placeholder="회원 생년월일 YYYYMMDD" />
+
+      <button @click="add()">추가</button>
+    </div>
+    <v-data-table
+      :headers="headers"
+      :items="data"
+      :items-per-page="5"
+      class="elevation-1"
+    >
+    <template v-slot:item="row">
+          <tr>
+            <td>{{row.item.id}}</td>
+            <td>{{row.item.pw}}</td>
+            <td>{{row.item.name}}</td>
+            <td>{{row.item.email}}</td>
+            <td>{{row.item.phoneNumber}}</td>
+            <td>{{row.item.birth}}</td>
+            <td>
+                <v-btn class="mx-2" fab dark small color="primary" @click="del(row.item.id)">삭제</v-btn>
+            </td>
+          </tr>
+      </template>
+    </v-data-table>
+
+    <!-- <table style="margin:10px auto;">
+      <tr>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>전화번호</th>
+        <th>생년월일</th>
+      </tr>
+      <tr v-for="(item, i) in data" :key="i">
+        <td>{{ item.id }}</td>
+        <td>{{ item.pw }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.phoneNumber }}</td>
+        <td>{{ item.birth }}</td>
+        <td><button @click="del(item.id)" style="width:50px">삭제</button></td>
+      </tr>
+    </table> -->
+    </v-container>
+    
+  </v-app>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  name: "App",
+  data() {
+    return {
+      id: "",
+      pw: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      birth: "",
+      data: [],
+      headers: [
+          { text: 'ID', value: 'id' },
+          { text: 'Password', value: 'pw' },
+          { text: 'Name', value: 'name' },
+          { text: 'E-mail', value: 'email' },
+          { text: 'PhoneNumber', value: 'phoneNumber' },
+          { text: 'BirthDay', value: 'birth' },
+        ],
+    };
+  },
+  methods: {
+    add() {
+      if (
+        this.id == "" ||
+        this.pw == "" ||
+        this.name == "" ||
+        this.email == "" ||
+        (this.phoneNumber == "") | (this.birth == "")
+      ) {
+        alert("등록불가");
+      } else {
+        var url = `http://localhost:3000/add/user`;
+        let member = {
+          id: this.id,
+          pw: this.pw,
+          name: this.name,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          birth: this.birth,
+        };
+        axios
+          .post(url, member)
+          .then((res) => {
+            console.log("tdtd");
+            console.log(res);
+            this.data = res.data.data.member;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    del(id) {
+      var url = `http://localhost:3000/delete/user`;
+      let data = {
+        id: id,
+      };
+      axios
+        .delete(url, { data: data })
+        .then((res) => {
+          console.log(res);
+          this.data = res.data.data.member;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  mounted() {
+    var url = `http://localhost:3000/`;
+    axios
+      .get(url)
+      .then((res) => {
+        this.data = res.data.data.member;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+};
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+input {
+  display: block;
+  margin: 10px auto 10px;
+  width: 200px;
+  height: 30px;
+}
+button {
+  width: 200px;
+  height: 30px;
+}
+.a {
+  display: inline-block;
+  margin-left: 10px;
+}
+</style>
