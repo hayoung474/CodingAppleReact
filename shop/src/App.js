@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Detail from "./Detail";
+import Cart from './Cart'
 import axios from "axios";
 
 import { Navbar, Nav, NavDropdown, Jumbotron, Button } from "react-bootstrap";
@@ -95,8 +96,8 @@ function App() {
           </재고context.Provider>
         </Route>
 
-        <Route path="/:id">
-          <div>아무거나 적었을 때</div>
+        <Route path="/cart">
+          <Cart></Cart>
         </Route>
       </Switch>
       {/* <button ><a href="http://www.naver.com">네이버</a></button> */}
