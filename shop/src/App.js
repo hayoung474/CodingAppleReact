@@ -1,18 +1,24 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Detail from "./Detail";
+// import Detail from "./Detail";
 import Cart from './Cart'
 import axios from "axios";
 
 import { Navbar, Nav, NavDropdown, Jumbotron, Button } from "react-bootstrap";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , lazy , Suspense} from "react";
+
+// lazy 로딩 
+let Detail= lazy(()=>{ return import('./Detail.js')})
+
 import Data from "./data";
 
 import { Link, Route, Switch, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
 //context 문법. 자식이 부모의 변수 값을 공유함
+
+
 
 export let 재고context = React.createContext(); // 범위생성
 
@@ -92,7 +98,9 @@ function App() {
         {/* 다른 파일에 context를 이용하여 재고 변수를 공유하고 싶을 때 */}
         <Route path="/detail/:id">
           <재고context.Provider value={재고}>
+            <Suspense fallback={<div>로딩중...</div>}>
             <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}></Detail>{" "}
+              </Suspense>
             {/* 다른 파일로 뺀 컴포넌트. Detail.js*/}
           </재고context.Provider>
         </Route>
@@ -114,7 +122,7 @@ function Card(props) {
   let history = useHistory();
   return (
     /* 여기에다가 onclick...*/
-    <div className="col-md-4" onClick={()=>{history.push('/detail/'+props.shoes.id)}}>
+    <div className="col-md-4" onClick={()=>{history.push('/detail/'+props.shoe.id)}}>
       <img
         src={`https://codingapple1.github.io/shop/shoes${props.id + 1}.jpg`}
         width="100%"
