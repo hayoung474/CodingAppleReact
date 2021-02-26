@@ -20,6 +20,8 @@ import { combineReducers, createStore } from "redux";
 // 아래같은 alert state 는 잘못된 코딩 관습!
 let alert초기값 = true;
 
+// reducer 가 state 를 변경하게 해주는 ... 그런 함수라고 생각하면 된다!
+// 어렵네 허허 
 function reducer2(state = alert초기값, 액션) {
   if (액션.type === "alert닫기") {
     state = false;
@@ -38,8 +40,25 @@ let 초기값 = [
 
 //                함수 기본값 설정 구문
 function reducer(state = 초기값, 액션) {
-  if (액션.type === "수량증가") {
+  if (액션.type === "항목추가"){
+    let copy = [...state]
+
+    const index = copy.findIndex(e => e.id === 액션.payload.id)
+    console.log(index);
+    
+    if(index >= 0){
+      let sum = parseInt(copy[index].quan) + parseInt(액션.payload.quan)
+      copy[index].quan = sum;
+    }
+    else{
+      copy.push(액션.payload);
+    }
+    return copy;
+  }
+  else if (액션.type === "수량증가") {
     // 수량 증가라는 데이터 수정방법을 정의한 것
+    // payload 는 dispatch 호출 시 함께 넘어온 데이터
+    // 액션.payload
     let copy = [...state]; // deepcopy
     copy[0].quan++;
     return copy; // 수정된 state
