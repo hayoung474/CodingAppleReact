@@ -9,7 +9,7 @@ import { Navbar, Nav, NavDropdown, Jumbotron, Button } from "react-bootstrap";
 import React, { useContext, useState } from "react";
 import Data from "./data";
 
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
 //context 문법. 자식이 부모의 변수 값을 공유함
@@ -64,6 +64,7 @@ function App() {
             <재고context.Provider value={재고}>
               <div className="row">
                 {shoes.map(function (shoe, index) {
+                  // 컴포넌트에는 onClick을 사용하지 말아라..
                   return <Card shoe={shoes[index]} i={index} key={index} />;
                 })}
               </div>
@@ -107,11 +108,15 @@ function App() {
 
 // 간단한 데이터 전송은 porps 를 쓰고, 컴포넌트 부모-자식 이 깊어지면 context를 활용하자.
 
+
 function Card(props) {
+
+  let history = useHistory();
   return (
-    <div className="col-md-4">
+    /* 여기에다가 onclick...*/
+    <div className="col-md-4" onClick={()=>{history.push('/detail/'+props.shoes.id)}}>
       <img
-        src={`https://codingapple1.github.io/shop/shoes${props.i + 1}.jpg`}
+        src={`https://codingapple1.github.io/shop/shoes${props.id + 1}.jpg`}
         width="100%"
       />
       <h4>{props.shoe.title}</h4>

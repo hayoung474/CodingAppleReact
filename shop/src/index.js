@@ -60,11 +60,11 @@ function reducer(state = 초기값, 액션) {
     // payload 는 dispatch 호출 시 함께 넘어온 데이터
     // 액션.payload
     let copy = [...state]; // deepcopy
-    copy[0].quan++;
+    copy[액션.payload.id].quan++;
     return copy; // 수정된 state
   } else if (액션.type === "수량감소") {
     let copy = [...state];
-    copy[0].quan--;
+    copy[액션.payload.id].quan--;
     return copy;
   } else {
     return state;
